@@ -11,10 +11,23 @@ def input_students
   country_of_birth = gets.chomp
   puts "What is his/her height?"
   height = gets.chomp
+  puts "Which cohort will he/she attending?"
+  cohort = gets.chomp
 
   while !name.empty? do
     # add the student hash to the array
-    students << {name: name, hobby: hobby, country_of_birth: country_of_birth, height: height, cohort: :november}
+    students << {
+      name: name,
+      hobby: hobby,
+      country_of_birth: country_of_birth,
+      height: height,
+      cohort:
+      if !cohort.empty?
+        cohort.to_sym
+      else
+        :november
+      end
+    }
     puts "Now we have #{students.count} students"
     # get another name from the user
     puts "Add another name or hit return to finish"
@@ -26,6 +39,8 @@ def input_students
       country_of_birth = gets.chomp
       puts "Height?"
       height = gets.chomp
+      puts "Cohort?"
+      cohort = gets.chomp
     end
   end
   # return the array of students
@@ -55,6 +70,7 @@ def print_footer(students)
 end
 # nothing happens until we call the methods
 students = input_students
+puts students
 print_header
 print(students)
 print_footer(students)
