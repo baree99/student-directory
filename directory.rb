@@ -24,7 +24,9 @@ end
 
 def print(students)
   students.each_with_index do |student, index|
-    puts "#{(index + 1).to_s}. #{student[:name]} (#{student[:cohort]} cohort)"
+    if student[:name].start_with?("S")
+      puts "#{(index + 1)}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 
