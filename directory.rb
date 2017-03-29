@@ -33,8 +33,9 @@ def input_students
   end
 
 def print_header
-  puts "The students of Villain Academy"
-  puts "-------------"
+  header_title = " The students of Villain Academy "
+  puts header_title.center(65, '* ')
+  puts "-" * header_title.center(65, '* ').length
 end
 
 def print(students)
@@ -42,7 +43,7 @@ def print(students)
   while i != students.length do
       student_to_print = students[i]
       puts """
-      #{student_to_print[:name]} is #{student_to_print[:height]} tall, has an odd hobby of #{student_to_print[:hobby].downcase},
+      #{i + 1}. #{student_to_print[:name]} is #{student_to_print[:height]} tall, has an odd hobby of #{student_to_print[:hobby].downcase},
       born in #{student_to_print[:country_of_birth]} and going to study in the #{student_to_print[:cohort]} cohort.
       """
       i += 1
