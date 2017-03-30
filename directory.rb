@@ -16,6 +16,11 @@ def default_cohort(m)
   m
 end
 
+def plural(s)
+  if s.count > 1
+     's'
+  end
+end
 
 def input_students
   puts "Please enter the names of the students"
@@ -43,7 +48,7 @@ def input_students
       cohort: default_cohort(cohort).to_sym
     }
 
-    puts "Now we have #{students.count} students"
+    puts "Now we have #{students.count} student#{plural(students)}"
     # get another name from the user
     puts "Add another name or hit return to finish"
     name = gets.chomp
@@ -81,7 +86,7 @@ def print(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  puts "Overall, we have #{students.count} great student#{plural(students)}"
 end
 
 def cohort_list(students)
