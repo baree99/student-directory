@@ -27,7 +27,7 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets.delete "\n"
   # while the name is not empty, repeat this code
   puts "What is his/her hobby?"
   hobby = gets.chomp
@@ -51,7 +51,7 @@ def input_students
     puts "Now we have #{students.count} student#{plural(students)}"
     # get another name from the user
     puts "Add another name or hit return to finish"
-    name = gets.chomp
+    name = gets.delete "\n"
     if !name.empty?
       puts "Hobby?"
       hobby = gets.chomp
