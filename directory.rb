@@ -121,6 +121,11 @@ end
 
 # nothing happens until we call the methods
 students = input_students
-print_header
-print_by_cohorts(cohort_list(students),students)
-print_footer(students)
+
+if !students.empty?
+  print_header
+  print_by_cohorts(cohort_list(students),students)
+  print_footer(students)
+else
+  puts "No student has been entered"
+end
