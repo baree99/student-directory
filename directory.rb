@@ -83,8 +83,39 @@ end
 def print_footer(students)
   puts "Overall, we have #{students.count} great students"
 end
+
+def cohort_list(students)
+  i = 0
+  cohorts = []
+  while i != students.length do
+    next_cohort = students[i]
+    if !cohorts.include? next_cohort[:cohort].to_s
+      cohorts << next_cohort[:cohort].to_s
+    end
+    i += 1
+  end
+  cohorts.uniq
+end
+
+def print_by_cohorts(cl,students)
+  i = 0
+  while i != cl.length do
+    next_cohort = cl[i]
+    puts "#{next_cohort.capitalize} cohort:"
+  students.each { |x|
+    if x[:cohort] == next_cohort.to_sym
+      puts """
+      #{i + 1}. #{x[:name]} is #{x[:height]} tall, has an odd hobby of #{x[:hobby].downcase},
+      born in #{x[:country_of_birth]}.
+      """
+    end
+    }
+    i += 1
+  end
+end
+
 # nothing happens until we call the methods
 students = input_students
 print_header
-print(students)
+print_by_cohorts(cohort_list(students),students)
 print_footer(students)
