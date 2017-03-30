@@ -1,3 +1,22 @@
+def default(x)
+  if !x.empty?
+    x
+  else
+    "Unknown"
+  end
+end
+
+def default_cohort(m)
+  cohort_defaults = %w(january february march april may june july august september october november december)
+  m.downcase
+  until cohort_defaults.include?(m)
+    puts "Please choose from the following months: january, february, march, april, may, june, july, august, september, october, november, december"
+    m = gets.chomp
+  end
+  m
+end
+
+
 def input_students
   puts "Please enter the names of the students"
   # create an empty array
@@ -17,17 +36,13 @@ def input_students
   while !name.empty? do
     # add the student hash to the array
     students << {
-      name: name,
-      hobby: hobby,
-      country_of_birth: country_of_birth,
-      height: height,
-      cohort:
-      if !cohort.empty?
-        cohort.to_sym
-      else
-        :november
-      end
+      name: default(name),
+      hobby: default(hobby),
+      country_of_birth: default(country_of_birth),
+      height: default(height),
+      cohort: default_cohort(cohort).to_sym
     }
+
     puts "Now we have #{students.count} students"
     # get another name from the user
     puts "Add another name or hit return to finish"
@@ -70,7 +85,6 @@ def print_footer(students)
 end
 # nothing happens until we call the methods
 students = input_students
-puts students
 print_header
 print(students)
 print_footer(students)
