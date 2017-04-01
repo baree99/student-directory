@@ -1,3 +1,5 @@
+@students = []
+
 def default(x)
   if !x.empty?
     x
@@ -16,16 +18,14 @@ def default_cohort(m)
   m
 end
 
-def plural(s)
-  if s.count > 1
+def plural
+  if @students.count > 1
      's'
   end
 end
 
 def input_students
   puts "Please enter the names of the students"
-  # create an empty array
-  students = []
   # get the first name
   name = gets.delete "\n"
   # while the name is not empty, repeat this code
@@ -40,7 +40,7 @@ def input_students
 
   while !name.empty? do
     # add the student hash to the array
-    students << {
+    @students << {
       name: default(name),
       hobby: default(hobby),
       country_of_birth: default(country_of_birth),
@@ -48,7 +48,7 @@ def input_students
       cohort: default_cohort(cohort).to_sym
     }
 
-    puts "Now we have #{students.count} student#{plural(students)}"
+    puts "Now we have #{@students.count} student#{plural}"
     # get another name from the user
     puts "Add another name or hit return to finish"
     name = gets.delete "\n"
@@ -64,7 +64,7 @@ def input_students
     end
   end
   # return the array of students
-  students
+  @students
   end
 
 def print_header
@@ -73,10 +73,10 @@ def print_header
   puts "-" * header_title.center(65, '* ').length
 end
 
-def print(students)
+def print_students_list
   i = 0
-  while i != students.length do
-      student_to_print = students[i]
+  while i != @students.length do
+      student_to_print = @students[i]
       puts """
       #{i + 1}. #{student_to_print[:name]} is #{student_to_print[:height]} tall, has an odd hobby of #{student_to_print[:hobby].downcase},
       born in #{student_to_print[:country_of_birth]} and going to study in the #{student_to_print[:cohort]} cohort.
@@ -85,15 +85,15 @@ def print(students)
   end
 end
 
-def print_footer(students)
-  puts "Overall, we have #{students.count} great student#{plural(students)}"
+def print_footer
+  puts "Overall, we have #{@students.count} great student#{plural}"
 end
 
-def cohort_list(students)
+def cohort_list
   i = 0
   cohorts = []
-  while i != students.length do
-    next_cohort = students[i]
+  while i != @students.length do
+    next_cohort = @students[i]
     if !cohorts.include? next_cohort[:cohort].to_s
       cohorts << next_cohort[:cohort].to_s
     end
@@ -102,12 +102,12 @@ def cohort_list(students)
   cohorts.uniq
 end
 
-def print_by_cohorts(cl,students)
+def print_by_cohorts(cl)
   i = 0
   while i != cl.length do
     next_cohort = cl[i]
     puts "#{next_cohort.capitalize} cohort:"
-  students.each { |x|
+  @students.each { |x|
     if x[:cohort] == next_cohort.to_sym
       puts """
       #{i + 1}. #{x[:name]} is #{x[:height]} tall, has an odd hobby of #{x[:hobby].downcase},
@@ -120,27 +120,34 @@ def print_by_cohorts(cl,students)
 end
 
 def interactive_menu
-  students = []
   loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
-    when "1"
-      students = input_students
-    when "2"
-      print_header
-      print(students)
-      print_footer(students)
-    when "9"
-      exit # this will cause the program to terminate
-    else
-      puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you meant, try again"
   end
 end
 
