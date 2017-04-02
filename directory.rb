@@ -156,24 +156,18 @@ def process(selection)
 end
 
 def save_students(filename)
-  # open the file for writing
-  file = File.open(filename, "w")
-  # iterate over the array of students
-  @students.each do |student|
+  open(filename, "w") { |f| @students.each {|student|
     student_data = [student[:name], student[:hobby], student[:country_of_birth], student[:height], student[:cohort]]
     csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
+    f.puts csv_line
+    }}
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+  open(filename, "r") { |f| f.readlines.each { |line|
     name, hobby, country_of_birth, height, cohort = line.chomp.split(',')
     students_array(name, hobby, country_of_birth, height, cohort)
-  end
-  file.close
+  }}
 end
 
 def try_load_students
