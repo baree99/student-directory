@@ -36,34 +36,21 @@ end
 
 def input_students
   puts "Please enter the names of the students"
-  # get the first name
   name = STDIN.gets.delete "\n"
-  # while the name is not empty, repeat this code
-  puts "What is his/her hobby?"
-  hobby = STDIN.gets.chomp
-  puts "What is his/her country of birth?"
-  country_of_birth = STDIN.gets.chomp
-  puts "What is his/her height?"
-  height = STDIN.gets.chomp
-  puts "Which cohort will he/she attending?"
-  cohort = STDIN.gets.chomp
-
   while !name.empty? do
-    # add the student hash to the array
-    students_array(name, hobby, country_of_birth, height, cohort)
-    puts "Now we have #{@students.count} student#{plural}"
-    # get another name from the user
-    puts "Add another name or hit return to finish"
-    name = STDIN.gets.delete "\n"
     if !name.empty?
-      puts "Hobby?"
+      puts "What is his/her hobby?"
       hobby = STDIN.gets.chomp
-      puts "Country of birth?"
+      puts "What is his/her country of birth?"
       country_of_birth = STDIN.gets.chomp
-      puts "Height?"
+      puts "What is his/her height?"
       height = STDIN.gets.chomp
-      puts "Cohort?"
+      puts "Which cohort will he/she attending?"
       cohort = STDIN.gets.chomp
+      students_array(name, hobby, country_of_birth, height, cohort)
+      puts "Now we have #{@students.count} student#{plural}"
+      puts "Add another name or hit return to finish"
+      name = STDIN.gets.delete "\n"
     end
   end
   # return the array of students
@@ -110,12 +97,14 @@ def print_by_cohorts(cl)
   while i != cl.length do
     next_cohort = cl[i]
     puts "#{next_cohort.capitalize} cohort:"
+    n = 0
   @students.each { |x|
     if x[:cohort] == next_cohort.to_sym
       puts """
-      #{i + 1}. #{x[:name]} is #{x[:height]} tall, has an odd hobby of #{x[:hobby]},
+      #{n + 1}. #{x[:name]} is #{x[:height]} tall, has an odd hobby of #{x[:hobby]},
       born in #{x[:country_of_birth]}.
       """
+      n += 1
     end
     }
     i += 1
@@ -139,7 +128,7 @@ end
 
 def show_students
   print_header
-  print_students_list
+  print_by_cohorts(cohort_list)
   print_footer
 end
 
