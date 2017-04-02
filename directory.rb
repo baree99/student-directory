@@ -1,5 +1,7 @@
 @students = []
 
+require 'csv'
+
 def default(x)
   if !x.empty?
     x
@@ -156,18 +158,16 @@ def process(selection)
 end
 
 def save_students(filename)
-  open(filename, "w") { |f| @students.each {|student|
-    student_data = [student[:name], student[:hobby], student[:country_of_birth], student[:height], student[:cohort]]
-    csv_line = student_data.join(",")
-    f.puts csv_line
+  CSV.open("/Users/peterbarcsak/Projects/student-directory/#{filename}.csv", "w") { |csv| @students.each {|student|
+    csv << [student[:name], student[:hobby], student[:country_of_birth], student[:height], student[:cohort]]
     }}
 end
 
-def load_students(filename = "students.csv")
-  open(filename, "r") { |f| f.readlines.each { |line|
-    name, hobby, country_of_birth, height, cohort = line.chomp.split(',')
+def load_students(filename = "students")
+  CSV.foreach("/Users/peterbarcsak/Projects/student-directory/#{filename}.csv") {|row|
+    name, hobby, country_of_birth, height, cohort = row
     students_array(name, hobby, country_of_birth, height, cohort)
-  }}
+  }
 end
 
 def try_load_students
@@ -181,7 +181,7 @@ def try_load_students
       exit
     end
   else
-    load_students("students.csv")
+    load_students("students")
   end
 end
 
