@@ -186,4 +186,5 @@ def try_load_students
 end
 
 try_load_students
+puts "You are currently using #{$0}."
 interactive_menu
