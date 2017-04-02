@@ -140,8 +140,10 @@ def process(selection)
     show_students
   when "3"
     save_students
+    puts "Student#{plural} saved succesfully"
   when "4"
     load_students
+    puts "Student#{plural} loaded succesfully"
   when "9"
     exit
   else
