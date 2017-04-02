@@ -24,43 +24,46 @@ def plural
   end
 end
 
+def students_array(name, hobby, country_of_birth, height, cohort)
+  @students << {
+    name: default(name),
+    hobby: default(hobby),
+    country_of_birth: default(country_of_birth),
+    height: default(height),
+    cohort: default_cohort(cohort).to_sym
+  }
+end
+
 def input_students
   puts "Please enter the names of the students"
   # get the first name
-  name = gets.delete "\n"
+  name = STDIN.gets.delete "\n"
   # while the name is not empty, repeat this code
   puts "What is his/her hobby?"
-  hobby = gets.chomp
+  hobby = STDIN.gets.chomp
   puts "What is his/her country of birth?"
-  country_of_birth = gets.chomp
+  country_of_birth = STDIN.gets.chomp
   puts "What is his/her height?"
-  height = gets.chomp
+  height = STDIN.gets.chomp
   puts "Which cohort will he/she attending?"
-  cohort = gets.chomp
+  cohort = STDIN.gets.chomp
 
   while !name.empty? do
     # add the student hash to the array
-    @students << {
-      name: default(name),
-      hobby: default(hobby),
-      country_of_birth: default(country_of_birth),
-      height: default(height),
-      cohort: default_cohort(cohort).to_sym
-    }
-
+    students_array(name, hobby, country_of_birth, height, cohort)
     puts "Now we have #{@students.count} student#{plural}"
     # get another name from the user
     puts "Add another name or hit return to finish"
-    name = gets.delete "\n"
+    name = STDIN.gets.delete "\n"
     if !name.empty?
       puts "Hobby?"
-      hobby = gets.chomp
+      hobby = STDIN.gets.chomp
       puts "Country of birth?"
-      country_of_birth = gets.chomp
+      country_of_birth = STDIN.gets.chomp
       puts "Height?"
-      height = gets.chomp
+      height = STDIN.gets.chomp
       puts "Cohort?"
-      cohort = gets.chomp
+      cohort = STDIN.gets.chomp
     end
   end
   # return the array of students
@@ -122,7 +125,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -162,20 +165,36 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:hobby], student[:country_of_birth], student[:height], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    name, hobby, country_of_birth, height, cohort = line.chomp.split(',')
+    students_array(name, hobby, country_of_birth, height, cohort)
   end
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first
+  if !filename.nil?
+    if File.exists?(filename)
+      load_students(filename)
+      puts "Loaded #{@students.count} from #{filename}"
+    else
+      puts "Sorry #{filename} doesn't exist."
+      exit
+    end
+  else
+    load_students("students.csv")
+  end
+end
+
+try_load_students
 interactive_menu
